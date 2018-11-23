@@ -17,37 +17,21 @@ import javax.swing.JOptionPane;
  * @author jesus
  */
 public class Conexion {
-     static Connection con = null;
+    private Connection conexionSqlServer;
+    //protected final String UrlSqlServer="jdbc:sqlserver://ASPIRE-A515-51N:1433;databaseName=cafeteria;user=usuarioSQl;password=Bolillo123;";
+        protected final String UrlSqlServer="jdbc:sqlserver://ASPIRE-A515-51N:1433;databaseName=MetropolisDeportivaPrueba;user=sa;password=m0rt4lk0mb4t;";
+    protected final String DriverSqlServer="com.microsoft.sqlserver.jdbc.SQLServerDriver";
     
-    public  static Connection obtenerConexion() {
-        String url = "jdbc:sqlserver://LocalHost:1433;databaseName=BDVentas";
-       // String url = "jdbc:sqlserver://Equipo-bd:1433;databaseName=BDVentas";
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null,"No se Pudo Establecer Conexion.... Revision Driver  " + e.getMessage(),
-            "Error de Conexion  ",JOptionPane.ERROR_MESSAGE);
+    
+    public Conexion() throws ClassNotFoundException {
+        try{
+            Class.forName(DriverSqlServer);
+            conexionSqlServer=DriverManager.getConnection(UrlSqlServer);
+            System.out.println("Conexion a SQLServer OK");
+           
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "No se establecio la conexion de SQLServer\n"+e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
         }
-        try {
-           // con = DriverManager.getConnection(url,"sa","Cisco10");
-            con = DriverManager.getConnection(url,"sa","1234");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,"ERROR" + e.getMessage(),
-            "Error de Conexion",JOptionPane.ERROR_MESSAGE);
-        }
-        return con;
-    }
-    public static ResultSet Consulta(String consulta){
-        Connection con = obtenerConexion();
-        Statement declara;
-        try {
-            declara = con.createStatement();
-            ResultSet respuesta = declara.executeQuery(consulta);
-            return respuesta; 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,"ERROR" + e.getMessage(),
-            "Error de Conexion",JOptionPane.ERROR_MESSAGE);
-        }
-        return null;
-    }
+}
+
 }
